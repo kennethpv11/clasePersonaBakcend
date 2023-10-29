@@ -1,0 +1,8 @@
+alembic init alembic
+alembic revision -m "nombre de la revision"
+alembic upgrade head
+alembic downgrade -1
+docker run --name postgres-db -e POSTGRES_PASSWORD=docker -e POSTGRES_DB=postgres -e POSTGRES_USER=test -p 5432:5432 postgres
+pip -m venv ./venv
+./venv/Scripts/Activate.ps1
+pip install -r requirements.txt
