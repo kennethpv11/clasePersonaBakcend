@@ -3,8 +3,36 @@ from model import Persona,Persona_py,Persona_request
 from sqlalchemy.orm import Session
 from typing import Union
 from fastapi import FastAPI,Response,HTTPException,status
-app = FastAPI()
+from fastapi.middleware.cors import CORSMiddleware
 
+app = FastAPI()
+#Lista de origenes permitidos
+#CORS (intercambio de recursos entre orígenes)
+#CORS o "intercambio de recursos entre orígenes"
+# se refiere a las situaciones en las que una interfaz 
+# que se ejecuta en un navegador tiene código JavaScript que se comunica con un backend,
+#  y el backend tiene un "origen" diferente al de la interfaz.
+#ORIGEN:
+#Un origen es la combinación de:
+# - protocolo ( http, https)
+# - dominio ( myapp.com, localhost, localhost.tiangolo.com) 
+# - puerto ( 80, 443, 8080).
+origins = [ #Lista de origenes permitidos
+        "http://localhost.tiangolo.com",
+        "https://localhost.tiangolo.com",
+        "http://localhost",
+        "http://127.0.0.1:5500",
+    ]
+#Los middleware son pasos intermediarios entre el cliente y el servidor
+#en este caso el navegador hace un paso intermediario llamado una petición options
+#la cual le da permiso y las credenciales para poder usar los metodos
+app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,#lista de origenes permitidos
+        allow_credentials=True,#permisos que concede
+        allow_methods=["*"],#Methodos a los cuales tiene acceso
+        allow_headers=["*"],#Headers permitidos
+)
 
 @app.post("/")
 def create_persona(persona:Persona_py):
